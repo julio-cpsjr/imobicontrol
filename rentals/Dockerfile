@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jdk-alpine
 
-WORKDIR /usersproperty
+WORKDIR /rentals
 
 COPY target/*.jar app.jar
 

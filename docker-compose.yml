@@ -1,0 +1,64 @@
+services:
+  gateway:
+    container_name: imobicontrol-gateway
+    build: ./gateway
+    ports:
+      - "8080:8080"
+    depends_on:
+      - myproperty
+      - rentals
+      - users
+    networks:
+      - minha-rede
+    hostname: gateway-service
+  users:
+    container_name: imobicontrol-users
+    build: ./usersproperty
+    ports:
+      - "8081:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/imobicontrol_users_db
+      SPRING_DATASOURCE_USERNAME: docker
+      SPRING_DATASOURCE_PASSWORD: minhasenha
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - minha-rede
+    hostname: users-service
+  myproperty:
+    container_name: imobicontrol-myproperty
+    build: ./myproperty
+    ports:
+      - "8083:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/imobicontrol_properties_db
+      SPRING_DATASOURCE_USERNAME: docker
+      SPRING_DATASOURCE_PASSWORD: minhasenha
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - minha-rede
+    hostname: myproperty-service
+  rentals:
+    container_name: imobicontrol-rentals
+    build: ./rentals
+    ports:
+      - "8082:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/imobicontrol_rentals_db
+      SPRING_DATASOURCE_USERNAME: docker
+      SPRING_DATASOURCE_PASSWORD: minhasenha
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    networks:
+      - minha-rede
+    hostname: rentals-service
+
+
+
+networks:
+  minha-rede:
+    ipam:
+      driver: bridge
+      config:
+        - subnet: 172.18.0.0/16
+          ip_range: 172.18.0.0/24
+          gateway: 172.18.0.1
+    external: true
