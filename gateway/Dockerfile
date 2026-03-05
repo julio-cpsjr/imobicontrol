@@ -1,6 +1,6 @@
 FROM eclipse-temurin:17-jdk-alpine
 
-WORKDIR /myproperty
+WORKDIR /gateway
 
 COPY target/*.jar app.jar
 
